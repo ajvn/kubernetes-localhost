@@ -1,29 +1,4 @@
 ---
-#- name: Install Metrics Server
-#  get_url:
-#    url: https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
-#    dest: /home/vagrant/metrics-server-deployment.yaml
-#    mode: '0644'
-#  become_user: vagrant
-
-    #- name: Adjust metrics-server hostNetwork
-    #  blockinfile:
-    #    path: /home/vagrant/metrics-server-deployment.yaml
-    #    insertafter: '      serviceAccountName: metrics-server'
-    #    block: |
-    #      hostNetwork: true
-    #  become_user: vagrant
-    #
-    #- name: Adjust metrics-server arguments
-    #  blockinfile:
-    #    path: /home/vagrant/metrics-server-deployment.yaml
-    #    insertafter: '         args:'
-    #    block: |
-    #                     - --metric-resolution=30s
-    #                     - --kubelet-insecure-tls
-    #                     - --kubelet-preferred-address-types=InternalDNS,InternalIP,Hostname
-    #  become_user: vagrant
-
 - name: Upload metrics-server manifest
   copy:
     src: metrics-server-deployment.yaml
