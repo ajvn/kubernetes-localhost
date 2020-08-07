@@ -1,0 +1,63 @@
+---
+#- name: Install Metrics Server
+#  get_url:
+#    url: https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+#    dest: /home/vagrant/metrics-server-deployment.yaml
+#    mode: '0644'
+#  become_user: vagrant
+
+    #- name: Adjust metrics-server hostNetwork
+    #  blockinfile:
+    #    path: /home/vagrant/metrics-server-deployment.yaml
+    #    insertafter: '      serviceAccountName: metrics-server'
+    #    block: |
+    #      hostNetwork: true
+    #  become_user: vagrant
+    #
+    #- name: Adjust metrics-server arguments
+    #  blockinfile:
+    #    path: /home/vagrant/metrics-server-deployment.yaml
+    #    insertafter: '         args:'
+    #    block: |
+    #                     - --metric-resolution=30s
+    #                     - --kubelet-insecure-tls
+    #                     - --kubelet-preferred-address-types=InternalDNS,InternalIP,Hostname
+    #  become_user: vagrant
+
+- name: Upload metrics-server manifest
+  copy:
+    src: metrics-server-deployment.yaml
+    dest: /home/vagrant
+    owner: vagrant
+    group: vagrant
+    mode: '0644'
+
+- name: Deploy Metrics Server
+  command: kubectl apply -f /home/vagrant/metrics-server-deployment.yaml
+  become_user: vagrant
+
+
+- name: Upload Kubernetes dashboard manifest
+  copy:
+    src: dashboard-deployment.yaml
+    dest: /home/vagrant
+    owner: vagrant
+    group: vagrant
+    mode: '0644'
+
+- name: Deploy Kubernetes dashboard
+  command: kubectl apply -f /home/vagrant/dashboard-deployment.yaml
+  become_user: vagrant
+
+- name: Upload service account for dashboard manifest
+  copy:
+    src: dashboard-access-sa.yaml
+    dest: /home/vagrant
+    owner: vagrant
+    group: vagrant
+    mode: '0644'
+
+- name: Create service account for accessing Kubernetes dashboard
+  command: kubectl apply -f /home/vagrant/dashboard-access-sa.yaml
+  become_user: vagrant
+

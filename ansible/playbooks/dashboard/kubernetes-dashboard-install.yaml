@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: no
+  become: True
+
+  tasks:
+    - name: Setup Kubernetes dashboard
+      include_tasks: ../../roles/dashboard/kubernetes-metrics-install.yaml
+

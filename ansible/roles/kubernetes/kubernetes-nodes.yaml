@@ -1,0 +1,101 @@
+---
+- name: Apt over HTTPS
+  apt:
+    name: [
+      'apt-transport-https',
+      'ca-certificates',
+      'gnupg2',
+      'curl',
+      'gnupg-agent',
+      'software-properties-common']
+    state: present
+    update_cache: yes
+
+- name: Signing key for Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Docker stable repo
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: Install docker and its dependecies
+  apt: 
+    name: [
+      'docker-ce',
+      'docker-ce-cli',
+      'containerd.io']
+    state: present
+    update_cache: yes
+  notify:
+    - docker status
+
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    group: docker
+
+- name: Signing key for Kubernetes
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Repository for Kubernetes
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes.list
+
+- name: Set sysctl
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: "1"
+    sysctl_set: yes
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: yes
+
+- name: Install Kubernetes binaries
+  apt: 
+    name: [
+      'kubelet',
+      'kubeadm',
+      'kubectl']
+    state: present
+    update_cache: yes
+
+- name: Edit host file
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      192.168.100.100 k8s-master.localhost.com k8s-master
+      192.168.100.101 k8s-node-1.localhost.com k8s-node-1
+      192.168.100.102 k8s-node-2.localhost.com k8s-node-2
+
+- name: Create kubelet file
+  file:
+    path: /etc/default/kubelet
+    state: touch
+
+- name: Configure node ip
+  lineinfile:
+    path: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+    line: "KUBELET_EXTRA_ARGS=--node-ip={{ node_ip }}"
+
+- name: Restart kubelet
+  service:
+    name: kubelet
+    daemon_reload: yes
+    state: restarted
+
+- name: Copy the join command to server location
+  copy:
+    src: join-command
+    dest: /tmp/join-command.sh
+    mode: "0777"
+
+- name: Join the node to cluster
+  command: sh /tmp/join-command.sh
+

@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: no
+  become: True
+
+  tasks:
+    - name: Setup Kubernetes master
+      include_tasks: ../../roles/kubernetes/kubernetes-master.yaml
+
+  handlers:
+    - name: docker status
+      service: name=docker state=started

@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  become: True
+
+  tasks:
+    - include_tasks: ../../roles/kubernetes/kubernetes-nodes.yaml
+
+  handlers:
+    - name: docker status
+      service: name=docker state=started

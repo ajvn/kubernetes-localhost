@@ -1,0 +1,130 @@
+# This role is meant to be run once, in case you need to repeat provisioning,
+# rebuild whole cluster.
+---
+- name: Apt over HTTPS
+  apt:
+    name: [
+      'apt-transport-https',
+      'ca-certificates',
+      'gnupg2',
+      'curl',
+      'gnupg-agent',
+      'software-properties-common']
+    state: present
+    update_cache: yes
+
+- name: Signing key for Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Docker stable repo
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: Install docker and its dependecies
+  apt:
+    name: [
+      'docker-ce',
+      'docker-ce-cli',
+      'containerd.io']
+    state: present
+    update_cache: yes
+  notify:
+    - docker status
+
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    group: docker
+
+- name: Signing key for Kubernetes
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Repository for Kubernetes
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes.list
+
+- name: Set sysctl
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: "1"
+    sysctl_set: yes
+    sysctl_file: /etc/sysctl.conf
+    state: present
+    reload: yes
+
+- name: Edit host file
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      192.168.100.100 k8s-master.localhost.com k8s-master
+      192.168.100.101 k8s-node-1.localhost.com k8s-node-1
+      192.168.100.102 k8s-node-2.localhost.com k8s-node-2
+
+- name: Install Kubernetes binaries
+  apt:
+    name: [
+      'kubelet',
+      'kubeadm',
+      'kubectl']
+    state: present
+    update_cache: yes
+
+- name: Create kubelet file
+  file:
+    path: /etc/default/kubelet
+    state: touch
+
+- name: Configure node ip
+  lineinfile:
+    path: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+    line: "KUBELET_EXTRA_ARGS=--node-ip={{ node_ip }}"
+
+- name: Restart kubelet
+  service:
+    name: kubelet
+    daemon_reload: yes
+    state: restarted
+
+- name: Initialize the Kubernetes cluster using kubeadm
+  command: kubeadm init --apiserver-advertise-address=192.168.100.100 --node-name k8s-master --pod-network-cidr=10.244.0.0/16
+
+- name: Create .kube directory
+  file:
+    path: /home/vagrant/.kube
+    owner: vagrant
+    group: vagrant
+    state: directory
+
+- name: Copy admin conf to .kube
+  become: true
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/vagrant/.kube/config
+    remote_src: yes
+
+- name: Change permission of config file
+  file:
+    path: /home/vagrant/.kube/config
+    owner: vagrant
+    group: vagrant
+ 
+- name: Deploy flannel network
+  become: false
+  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  args:
+    executable: /bin/bash
+
+- name: Generate join command
+  command: kubeadm token create --print-join-command
+  register: join_command
+
+- name: Copy join command to local file
+  local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
+
