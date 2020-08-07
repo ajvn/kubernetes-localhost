@@ -1,3 +1,4 @@
 .vagrant/*
 *.log
 ansible/kubernetes/join_command
+ansible/playbooks/kubernetes/join-command
