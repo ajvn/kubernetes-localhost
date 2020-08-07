@@ -1,6 +1,4 @@
 # kubernetes-localhost
-![Vagrant Demo](https://s7.gifyu.com/images/render1596829211754.gif)
-
 Deploys Kubernetes with dashboard on local machine using Vagrant.
 
 By default you get 1 master, 2 working nodes, and deployed dashboard.
