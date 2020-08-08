@@ -68,6 +68,8 @@ mkdir -p ~/.kube/kubernetes-localhost
 # Copy file from Kubernetes master
 scp -i ~/.vagrant.d/insecure_private_key vagrant@192.168.100.100:~/.kube/config ~/.kube/kubernetes-localhost
 ```
+Note: In case you redeploy cluster, you'll have to remove previous entry from `.ssh/known_hosts` or you'll
+get `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` warning.
 * You can now access Kubernetes cluster without sshing into Vagrant box:
 
 `kubectl --kubeconfig=/home/$USER/.kube/kubernetes-localhost get pods --all-namespaces`
