@@ -1,7 +1,7 @@
 ## TODO:
 * [x]Deployment of Kubernetes Dashboard
-* []Provision NFS for persistent storage purposes
+* [ ]Provision NFS for persistent storage purposes
 * [x]Setup loadbalancer
 * Manifests:
-- []Jenkins
+- [ ]Jenkins
 - [x]Nginx
