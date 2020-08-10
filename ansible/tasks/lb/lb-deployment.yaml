@@ -10,17 +10,6 @@
     executable: /bin/bash
   become_user: vagrant
 
-    #- name: MetalLB installation preparation II
-    #  lineinfile:
-    #    path: /home/vagrant/kube-proxy.yaml
-    #    regexp: "^strictARP: "
-    #    line: "strictARP: true"
-    #  become_user: vagrant
-    #
-    #- name: MetalLB installation preparation III
-    #  command: kubectl apply -f /home/vagrant/kube-proxy.yaml
-    #  become_user: vagrant
-
 - name: Creation of namespace
   command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
   become_user: vagrant
