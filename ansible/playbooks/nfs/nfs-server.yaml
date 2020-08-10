@@ -3,4 +3,4 @@
   become: True
 
   tasks:
-    - include_tasks: ../../roles/nfs/nfs_server.yml
+    - include_tasks: ../../tasks/nfs/nfs_server.yml

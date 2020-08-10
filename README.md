@@ -1,18 +1,18 @@
 # kubernetes-localhost
 [![asciicast](https://asciinema.org/a/352272.svg)](https://asciinema.org/a/352272?autoplay=1&speed=5)
-Deploys Kubernetes with dashboard on local machine using Vagrant.
+Deploys Kubernetes with loadbalancer & dashboard on local machine using Vagrant.
 
-By default you get 1 master, 2 working nodes, and deployed dashboard.
+By default you get 1 master, 2 working nodes, loadbalancer, and deployed dashboard.
 
 Version of deployed Kubernetes cluster is 1.18, version of Ubuntu VirtualBox
 image is 18.04.
 
-Dashboard is available via NodePort on one of the deployed worker nodes.
-If you didn't change network ip range in Vagrantfile, dashboard will be available
-on either:
-- https://192.168.100.101:30000
+For bare-metal loadbalancing purposes [MetalLB](https://metallb.universe.tf/) is used.
 
-or
+Dashboard is available via port 30000 on worker nodes.
+If you didn't change network ip range or number of worker nodes in Vagrantfile,
+dashboard will be available on both:
+- https://192.168.100.101:30000
 - https://192.168.100.102:30000
 
 ![Dashboard Example](images/kubernetes-localhost-dashboard.png)

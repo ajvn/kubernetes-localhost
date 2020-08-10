@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: no
+  become: True
+
+  tasks:
+    - name: Deploy MetalLB
+      include_tasks: ../../tasks/lb/lb-deployment.yaml
+

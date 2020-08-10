@@ -1,0 +1,38 @@
+---
+# For this to work, ARP needs to be in strict mode:
+# https://metallb.universe.tf/installation/#preparation
+- name: MetalLB installation preparation I
+  shell: |
+    kubectl get configmap kube-proxy -n kube-system -o yaml | \
+    sed -e "s/strictARP: false/strictARP: true/" | \
+    kubectl apply -f - -n kube-system
+  args:
+    executable: /bin/bash
+  become_user: vagrant
+
+    #- name: MetalLB installation preparation II
+    #  lineinfile:
+    #    path: /home/vagrant/kube-proxy.yaml
+    #    regexp: "^strictARP: "
+    #    line: "strictARP: true"
+    #  become_user: vagrant
+    #
+    #- name: MetalLB installation preparation III
+    #  command: kubectl apply -f /home/vagrant/kube-proxy.yaml
+    #  become_user: vagrant
+
+- name: Creation of namespace
+  command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+  become_user: vagrant
+
+- name: Service account, PodSecurity, ClusterRole etc..
+  command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+  become_user: vagrant
+
+- name: Memberlist
+  command: kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+  become_user: vagrant
+
+- name: MetalLB configuration
+  command: kubectl apply -f ../../../lb/metallb-config.yaml
+  become_user: vagrant

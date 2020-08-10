@@ -5,5 +5,5 @@
 
   tasks:
     - name: Setup Kubernetes dashboard
-      include_tasks: ../../roles/dashboard/kubernetes-metrics-install.yaml
+      include_tasks: ../../tasks/dashboard/kubernetes-metrics-install.yaml
 

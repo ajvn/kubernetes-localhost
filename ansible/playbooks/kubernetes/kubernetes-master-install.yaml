@@ -5,7 +5,7 @@
 
   tasks:
     - name: Setup Kubernetes master
-      include_tasks: ../../roles/kubernetes/kubernetes-master.yaml
+      include_tasks: ../../tasks/kubernetes/kubernetes-master.yaml
 
   handlers:
     - name: docker status

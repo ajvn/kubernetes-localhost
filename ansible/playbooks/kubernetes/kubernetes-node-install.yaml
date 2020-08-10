@@ -4,7 +4,7 @@
   become: True
 
   tasks:
-    - include_tasks: ../../roles/kubernetes/kubernetes-nodes.yaml
+    - include_tasks: ../../tasks/kubernetes/kubernetes-nodes.yaml
 
   handlers:
     - name: docker status
