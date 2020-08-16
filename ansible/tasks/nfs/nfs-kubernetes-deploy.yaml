@@ -1,0 +1,20 @@
+---
+- name: Upload storage manifests
+  copy:
+    src: "{{ item }}"
+    dest: /home/vagrant
+    owner: vagrant
+    group: vagrant
+    mode: '0644'
+  with_items:
+    - ../../../storage/persistent-volume.yaml
+    - ../../../storage/persistent-volume-claim.yaml
+
+- name: Apply persistent volume
+  command: kubectl apply -f /home/vagrant/persistent-volume.yaml
+  become_user: vagrant
+
+- name: Apply persistent volume claim
+  command: kubectl apply -f /home/vagrant/persistent-volume-claim.yaml
+  become_user: vagrant
+

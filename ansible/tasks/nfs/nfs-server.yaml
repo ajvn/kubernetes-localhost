@@ -1,29 +1,37 @@
-- name: "Update packages"
+- name: Update packages
   apt:
     update_cache: yes
     cache_valid_time: 3600
     upgrade: safe
 
-- name: "Install packages"
+- name: Install packages
   apt:
     name: nfs-kernel-server
     state: present
 
-- name: "Setup mount"
+- name: Enable service
+  systemd:
+    name: nfs-server
+    state: started
+    enabled: yes
+
+- name: Setup mount
   file:
     state: directory
     path: /var/nfs/kubernetes
     mode: 0755
 
-- name: "Configure nfs export"
+- name: Configure nfs export
   blockinfile:
     path: /etc/exports
-    marker: "#### Ansible"
     state: present
     block: |
-      /var/nfs/kubernetes    172.40.50.0/24(rw,sync,no_subtree_check)
+      /var/nfs/kubernetes    192.168.100.0/24(rw,sync,no_subtree_check,insecure)
 
-- name: "Restart the service"
+- name: Export directory
+  command: exportfs -a
+
+- name: Restart the service
   systemd:
     name: nfs-kernel-server
     state: restarted

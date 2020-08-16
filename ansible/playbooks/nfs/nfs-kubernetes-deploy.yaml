@@ -1,0 +1,8 @@
+- hosts: all
+  gather_facts: no
+  become: True
+
+  tasks:
+    - name: Deploy NFS storage to Kubernetes
+      include_tasks: ../../tasks/nfs/nfs-kubernetes-deploy.yaml
+

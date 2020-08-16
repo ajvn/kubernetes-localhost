@@ -3,4 +3,6 @@
   become: True
 
   tasks:
-    - include_tasks: ../../tasks/nfs/nfs_server.yml
+    - name: Setup NFS server
+      include_tasks: ../../tasks/nfs/nfs-server.yaml
+
