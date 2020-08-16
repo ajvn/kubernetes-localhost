@@ -1,5 +1,4 @@
 # kubernetes-localhost
-## This branch is still in progress, once NFS persistent storage is ready, it will be merged with master.
 [![asciicast](https://asciinema.org/a/352272.svg)](https://asciinema.org/a/352272?autoplay=1&speed=5)
 Deploys Kubernetes with loadbalancer, dashboard & persistent storage
 on local machine using Vagrant.
