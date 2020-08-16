@@ -45,6 +45,9 @@ Vagrant.configure("2") do |config|
         master.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "ansible/playbooks/dashboard/kubernetes-dashboard-install.yaml"
         end
+        master.vm.provision "ansible_local" do |ansible|
+            ansible.playbook = "ansible/playbooks/nfs/nfs-kubernetes-deploy.yaml"
+        end
 
     end
 
