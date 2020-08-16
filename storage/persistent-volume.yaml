@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nfs
+  labels:
+    volume: nfs
+spec:
+  storageClassName: nfs
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 192.168.100.150
+    path: "/var/nfs/kubernetes"

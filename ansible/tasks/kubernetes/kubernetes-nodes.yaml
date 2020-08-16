@@ -1,5 +1,5 @@
 ---
-- name: Apt over HTTPS
+- name: Apt over HTTPS and nfs-common
   apt:
     name: [
       'apt-transport-https',
@@ -7,7 +7,8 @@
       'gnupg2',
       'curl',
       'gnupg-agent',
-      'software-properties-common']
+      'software-properties-common',
+      'nfs-common']
     state: present
     update_cache: yes
 

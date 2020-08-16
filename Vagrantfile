@@ -5,6 +5,24 @@ N = 2
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
 
+    #TODO: Create NFS server for persistent storage
+    config.vm.define "k8s-nfs-server" do |nfs|
+        nfs.vm.box = IMAGE_NAME
+        nfs.vm.box_check_update = "True"
+        nfs.vm.network "private_network", ip: "192.168.100.150"
+        nfs.vm.hostname = "k8s-nfs-server"
+        nfs.vm.provider "virtualbox" do |nfs|
+          nfs.memory = "768"
+          nfs.cpus = 1
+        end
+        nfs.vm.provision "ansible_local" do |ansible|
+            ansible.playbook = "ansible/playbooks/nfs/nfs-server.yaml"
+            ansible.extra_vars = {
+                node_ip: "192.168.100.150",
+            }
+        end
+    end
+
     config.vm.define "k8s-master" do |master|
         master.vm.box = IMAGE_NAME
         master.vm.box_check_update = "True"
@@ -49,22 +67,4 @@ Vagrant.configure("2") do |config|
             end
         end
     end
-
-    #TODO: Create NFS server for persistent storage
-    #config.vm.define "k8s-nfs-server" do |nfs|
-    #    nfs.vm.box = IMAGE_NAME
-    #    nfs.vm.box_check_update = "True"
-    #    nfs.vm.network "private_network", ip: "192.168.90.1"
-    #    nfs.vm.hostname = "k8s-nfs-server"
-    #    nfs.vm.provider "virtualbox" do |nfs|
-    #      nfs.memory = "256"
-    #      nfs.cpus = 1
-    #    end
-    #    nfs.vm.provision "ansible" do |ansible|
-    #        ansible.playbook = "ansible/playbooks/nfs/nfs_server.yml"
-    #        ansible.extra_vars = {
-    #            node_ip: "192.168.50.200",
-    #        }
-    #    end
-    #end
 end
