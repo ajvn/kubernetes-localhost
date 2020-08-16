@@ -1,7 +1,7 @@
 ## TODO:
 * [x]Deployment of Kubernetes Dashboard
 * [x]Provision NFS for persistent storage purposes
-    - [ ]Deploy this automatically during vagrant provisioning
+    - [x]Deploy this automatically during vagrant provisioning
 * [x]Setup loadbalancer
 * Manifests:
     - [x]Nginx ephemeral
