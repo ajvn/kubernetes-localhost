@@ -10,7 +10,7 @@ and deployed dashboard.
 Version of deployed Kubernetes cluster is 1.18, version of Ubuntu VirtualBox
 image is 18.04.
 
-Persistent volume of 5GB, and 1GB persistent volume claim are provided automatically.
+Persistent volume `pv-nfs` and 5GB persistent volume claim `pvc-nfs` are provided automatically.
 For examples on how to use/create your own pv/pvc, check `manifests` directory.
 
 For bare-metal loadbalancing purposes [MetalLB](https://metallb.universe.tf/) is used.

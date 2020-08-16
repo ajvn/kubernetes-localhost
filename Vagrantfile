@@ -5,7 +5,6 @@ N = 2
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
 
-    #TODO: Create NFS server for persistent storage
     config.vm.define "k8s-nfs-server" do |nfs|
         nfs.vm.box = IMAGE_NAME
         nfs.vm.box_check_update = "True"
