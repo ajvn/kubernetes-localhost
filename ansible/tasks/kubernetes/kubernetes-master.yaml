@@ -66,7 +66,7 @@
       192.168.100.100 k8s-master.localhost.com k8s-master
       192.168.100.101 k8s-node-1.localhost.com k8s-node-1
       192.168.100.102 k8s-node-2.localhost.com k8s-node-2
-      192.168.100.150 k8s-nfs.localhost k8s-nfs
+      192.168.100.150 k8s-nfs.localhost.com    k8s-nfs
 
 - name: Install Kubernetes binaries
   apt:

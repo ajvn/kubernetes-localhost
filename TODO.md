@@ -6,5 +6,5 @@
 * Manifests:
     - [x]Nginx ephemeral
     - [ ]Nginx with persistent storage
-    - [ ]Jenkins ephemeral
+    - [x]Jenkins ephemeral
     - [ ]Jenkins with persistent storage
