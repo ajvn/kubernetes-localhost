@@ -122,6 +122,10 @@
   args:
     executable: /bin/bash
 
+- name: Disable scheduling on master node
+  become: false
+  shell: kubectl taint nodes k8s-master key=value:NoSchedule
+
 - name: Generate join command
   command: kubeadm token create --print-join-command
   register: join_command
