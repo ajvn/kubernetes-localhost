@@ -8,3 +8,9 @@
     - [ ]Nginx with persistent storage
     - [x]Jenkins ephemeral
     - [ ]Jenkins with persistent storage
+* Monitoring:
+    - [ ]Prometheus Clusterrole manifest
+    - [ ]Prometheus ConfigMap manifest
+    - [ ]Prometheus Storage manifest
+    - [ ]Prometheus Deployment manifest
+
