@@ -1,33 +1,42 @@
 # kubernetes-localhost
 [![asciicast](https://asciinema.org/a/352272.svg)](https://asciinema.org/a/352272?autoplay=1&speed=5)
-Deploys Kubernetes with loadbalancer, dashboard & persistent storage
+Deploys Kubernetes with loadbalancer, dashboard, persistent storage, and monitoring
 on local machine using Vagrant.
 
 By default you get 1 master, 2 working nodes, NFS server, loadbalancer,
-and deployed dashboard.
+monitoring, and deployed dashboard.
 
 Version of deployed Kubernetes cluster is 1.18, version of Ubuntu VirtualBox
 image is 18.04.
 
-Persistent volume `pv-nfs` and 5GB persistent volume claim `pvc-nfs` are provided automatically.
-For examples on how to use/create your own pv/pvc, check `storage` directory.
-
-For bare-metal loadbalancing purposes [MetalLB](https://metallb.universe.tf/) is used.
-
+## Dashboard
 Dashboard is available via port 30000 on worker nodes.
 If you didn't change network ip range or number of worker nodes in Vagrantfile,
 dashboard will be available on both:
 - https://192.168.100.101:30000
 - https://192.168.100.102:30000
 
-![Dashboard Example](images/kubernetes-localhost-dashboard.png)
-
-
 Note:
 In order to access dashboard via Chromium based browsers, you'll have to bypass
 invalid error certificate error on above mentioned URLs. In order to do that,
 just type `thisisunsafe` while on dashboard page. You don't need any input
 field, just typing it while on that page will do the trick.
+
+![Dashboard Example](images/kubernetes-localhost-dashboard.png)
+
+## Storage:
+Persistent volume `pv-nfs` and 5GB persistent volume claim `pvc-nfs` are provided automatically.
+For examples on how to use/create your own pv/pvc, check `/storage` directory.
+
+## Load-balancer:
+For bare-metal loadbalancing purposes [MetalLB](https://metallb.universe.tf/) is used.
+For deployment manifests check `/lb` directory.
+
+
+
+## Monitoring
+Prometheus is used for monitoring backend, Grafana is deployed for visualizing
+graphs. Deployment manifests are available in `/monitoring` directory.
 
 ## Requirements
 * [Vagrant](https://www.vagrantup.com/)
