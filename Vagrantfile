@@ -1,4 +1,5 @@
 ENV["LC_ALL"] = "en_US.UTF-8"
+CODE_NAME = "bionic"
 IMAGE_NAME = "ubuntu/bionic64"
 N = 2
 
@@ -35,15 +36,23 @@ Vagrant.configure("2") do |config|
             ansible.playbook = "ansible/playbooks/kubernetes/kubernetes-master-install.yaml"
             ansible.extra_vars = {
                 node_ip: "192.168.100.100",
+                ansible_python_interpreter: "/usr/bin/python3",
+                code_name: CODE_NAME
             }
         end
         # It is also possible to specify this playbook to run as part of
         # kubernetes-master-install.yaml, if you prefer it that way.
         master.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "ansible/playbooks/lb/lb-deployment.yaml"
+            ansible.extra_vars = {
+                ansible_python_interpreter: "/usr/bin/python3"
+            }
         end
         master.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "ansible/playbooks/dashboard/kubernetes-dashboard-install.yaml"
+             ansible.extra_vars = {
+                ansible_python_interpreter: "/usr/bin/python3"
+            }
         end
         master.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "ansible/playbooks/nfs/nfs-kubernetes-deploy.yaml"
@@ -65,6 +74,8 @@ Vagrant.configure("2") do |config|
                 ansible.playbook = "ansible/playbooks/kubernetes/kubernetes-node-install.yaml"
                 ansible.extra_vars = {
                     node_ip: "192.168.100.10#{node_id}",
+                    ansible_python_interpreter: "/usr/bin/python3",
+                    code_name: CODE_NAME
                 }
             end
         end

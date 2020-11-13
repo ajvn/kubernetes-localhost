@@ -2,6 +2,8 @@
 - hosts: all
   gather_facts: no
   become: True
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
 
   tasks:
     - include_tasks: ../../tasks/kubernetes/kubernetes-nodes.yaml

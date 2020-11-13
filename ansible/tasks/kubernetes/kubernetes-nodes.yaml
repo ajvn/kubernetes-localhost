@@ -19,7 +19,7 @@
 
 - name: Docker stable repo
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ code_name }} stable
     state: present
 
 - name: Install docker and its dependecies
