@@ -71,6 +71,7 @@
 - name: Install Kubernetes binaries
   apt:
     name: [
+      'etcd-client',
       'kubelet',
       'kubeadm',
       'kubectl']
