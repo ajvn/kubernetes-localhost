@@ -6,7 +6,7 @@ on local machine using Vagrant.
 By default you get 1 master, 2 working nodes, NFS server, loadbalancer,
 monitoring, and deployed dashboard.
 
-Version of deployed Kubernetes cluster is 1.18, version of Ubuntu VirtualBox
+Version of deployed Kubernetes cluster is 1.19, version of Ubuntu VirtualBox
 image is 18.04.
 
 ## Dashboard
