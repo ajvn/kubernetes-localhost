@@ -3,15 +3,15 @@
 * [x] Provision NFS for persistent storage purposes
     - [x] Deploy this automatically during vagrant provisioning
 * [x] Setup loadbalancer
-* Manifests:
+* [ ] Manifests:
     - [x] Nginx ephemeral
     - [ ] Nginx with persistent storage
     - [x] Jenkins ephemeral
     - [ ] Jenkins with persistent storage
-* Monitoring:
+* [ ] Monitoring:
     - [ ] Prometheus Clusterrole manifest
     - [ ] Prometheus ConfigMap manifest
     - [ ] Prometheus Storage manifest
     - [ ] Prometheus Deployment manifest
-* Image registry:
+* [ ] Image registry:
     - [ ] Setup solution for image registry inside of the cluster
