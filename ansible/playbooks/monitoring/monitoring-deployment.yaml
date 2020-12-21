@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: no
+  become: True
+
+  tasks:
+    - name: Deploy prometheus operator
+      include_tasks: ../../tasks/monitoring/monitoring-deployment.yaml
+

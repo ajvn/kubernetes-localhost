@@ -1,3 +1,4 @@
+---
 - name: Update packages
   apt:
     update_cache: yes
@@ -28,7 +29,7 @@
   file:
     state: directory
     path: /var/nfs/kubernetes
-    mode: 0755
+    mode: 0777
 
 - name: Configure nfs export
   blockinfile:

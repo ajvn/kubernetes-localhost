@@ -1,39 +1,48 @@
 # kubernetes-localhost
 [![asciicast](https://asciinema.org/a/352272.svg)](https://asciinema.org/a/352272?autoplay=1&speed=5)
-Deploys Kubernetes with loadbalancer, dashboard & persistent storage
+Deploys Kubernetes with loadbalancer, dashboard, persistent storage, and monitoring
 on local machine using Vagrant.
 
 By default you get 1 master, 2 working nodes, NFS server, loadbalancer,
-and deployed dashboard.
+monitoring, and deployed dashboard.
 
-Version of deployed Kubernetes cluster is 1.18, version of Ubuntu VirtualBox
+Version of deployed Kubernetes cluster is 1.20.1, version of Ubuntu VirtualBox
 image is 18.04.
 
-Persistent volume `pv-nfs` and 5GB persistent volume claim `pvc-nfs` are provided automatically.
-For examples on how to use/create your own pv/pvc, check `storage` directory.
-
-For bare-metal loadbalancing purposes [MetalLB](https://metallb.universe.tf/) is used.
-
+## Dashboard
 Dashboard is available via port 30000 on worker nodes.
 If you didn't change network ip range or number of worker nodes in Vagrantfile,
 dashboard will be available on both:
 - https://192.168.100.101:30000
 - https://192.168.100.102:30000
 
-![Dashboard Example](images/kubernetes-localhost-dashboard.png)
-
-
-Note:
+**Note:**
 In order to access dashboard via Chromium based browsers, you'll have to bypass
 invalid error certificate error on above mentioned URLs. In order to do that,
 just type `thisisunsafe` while on dashboard page. You don't need any input
 field, just typing it while on that page will do the trick.
 
+![Dashboard Example](images/kubernetes-localhost-dashboard.png)
+
+## Storage:
+Persistent volume `pv-nfs` and 5GB persistent volume claim `pvc-nfs` are provided automatically.
+For examples on how to use/create your own pv/pvc, check `/storage` directory.
+
+## Load-balancer:
+For bare-metal loadbalancing purposes [MetalLB](https://metallb.universe.tf/) is used.
+For deployment manifests check `/lb` directory.
+
+## Monitoring
+Prometheus operator is installed, if you wish to consume it, check example in
+`monitoring/prometheus-example.yaml`. Full blown setup with node-exporter,
+kube-state-metrics, alertmanager, and Grafana is a bit too resource expensive
+for what this project aims to achieve.
+
 ## Requirements
 * [Vagrant](https://www.vagrantup.com/)
 * [VirtualBox](https://www.virtualbox.org/)
 
-Note:
+**Note**:
 Vagrantfile uses ansible_local module, which means you don't need Ansible
 installed on your workstation. However, if you already have it installed,
 and prefer to use that instead of letting Vagrant install Ansible on each
@@ -75,7 +84,10 @@ scp -i ~/.vagrant.d/insecure_private_key vagrant@192.168.100.100:~/.kube/config 
 ```
 Note: In case you redeploy cluster, you'll have to remove previous entry from `.ssh/known_hosts` or you'll
 get `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` warning, you can use
-this command for example: `sed -i "/192.168.100.100/d" ~/.ssh/known_hosts`
+this command for example:
+```bash
+sed -i "/192.168.100.100/d" ~/.ssh/known_hosts
+```
 * You can now access Kubernetes cluster without sshing into Vagrant box:
 
 `kubectl --kubeconfig=/home/$USER/.kube/kubernetes-localhost get pods --all-namespaces`

@@ -2,6 +2,8 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 CODE_NAME = "bionic"
 IMAGE_NAME = "ubuntu/bionic64"
 N = 2
+YAML_HOME = "/home/vagrant/k8s-yaml-files"
+KUBERNETES_VERSION = "1.20.1-00"
 
 Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
@@ -19,6 +21,8 @@ Vagrant.configure("2") do |config|
             ansible.playbook = "ansible/playbooks/nfs/nfs-server.yaml"
             ansible.extra_vars = {
                 node_ip: "192.168.100.150",
+                ansible_python_interpreter: "/usr/bin/python3",
+                yaml_home: YAML_HOME
             }
         end
     end
@@ -37,7 +41,9 @@ Vagrant.configure("2") do |config|
             ansible.extra_vars = {
                 node_ip: "192.168.100.100",
                 ansible_python_interpreter: "/usr/bin/python3",
-                code_name: CODE_NAME
+                code_name: CODE_NAME,
+                yaml_home: YAML_HOME,
+                k8s_ver: KUBERNETES_VERSION
             }
         end
         # It is also possible to specify this playbook to run as part of
@@ -45,19 +51,31 @@ Vagrant.configure("2") do |config|
         master.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "ansible/playbooks/lb/lb-deployment.yaml"
             ansible.extra_vars = {
-                ansible_python_interpreter: "/usr/bin/python3"
+                ansible_python_interpreter: "/usr/bin/python3",
+                yaml_home: YAML_HOME
             }
         end
         master.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "ansible/playbooks/dashboard/kubernetes-dashboard-install.yaml"
              ansible.extra_vars = {
-                ansible_python_interpreter: "/usr/bin/python3"
+                ansible_python_interpreter: "/usr/bin/python3",
+                yaml_home: YAML_HOME
             }
         end
         master.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "ansible/playbooks/nfs/nfs-kubernetes-deploy.yaml"
+            ansible.extra_vars = {
+                ansible_python_interpreter: "/usr/bin/python3",
+                yaml_home: YAML_HOME
+            }
         end
-
+        master.vm.provision "ansible_local" do |ansible|
+            ansible.playbook = "ansible/playbooks/monitoring/monitoring-deployment.yaml"
+            ansible.extra_vars = {
+                ansible_python_interpreter: "/usr/bin/python3",
+                yaml_home: YAML_HOME
+            }
+        end
     end
 
     (1..N).each do |node_id|
@@ -75,7 +93,9 @@ Vagrant.configure("2") do |config|
                 ansible.extra_vars = {
                     node_ip: "192.168.100.10#{node_id}",
                     ansible_python_interpreter: "/usr/bin/python3",
-                    code_name: CODE_NAME
+                    code_name: CODE_NAME,
+                    yaml_home: YAML_HOME,
+                    k8s_ver: KUBERNETES_VERSION
                 }
             end
         end
