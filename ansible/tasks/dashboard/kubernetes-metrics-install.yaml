@@ -2,37 +2,37 @@
 - name: Upload metrics-server manifest
   copy:
     src: metrics-server-deployment.yaml
-    dest: /home/vagrant
+    dest: '{{ yaml_home }}'
     owner: vagrant
     group: vagrant
     mode: '0644'
 
 - name: Deploy Metrics Server
-  command: kubectl apply -f /home/vagrant/metrics-server-deployment.yaml
+  command: kubectl apply -f {{ yaml_home }}/metrics-server-deployment.yaml
   become_user: vagrant
 
 
 - name: Upload Kubernetes dashboard manifest
   copy:
     src: dashboard-deployment.yaml
-    dest: /home/vagrant
+    dest: '{{ yaml_home }}'
     owner: vagrant
     group: vagrant
     mode: '0644'
 
 - name: Deploy Kubernetes dashboard
-  command: kubectl apply -f /home/vagrant/dashboard-deployment.yaml
+  command: kubectl apply -f {{ yaml_home }}/dashboard-deployment.yaml
   become_user: vagrant
 
 - name: Upload service account for dashboard manifest
   copy:
     src: dashboard-access-sa.yaml
-    dest: /home/vagrant
+    dest: '{{ yaml_home }}'
     owner: vagrant
     group: vagrant
     mode: '0644'
 
 - name: Create service account for accessing Kubernetes dashboard
-  command: kubectl apply -f /home/vagrant/dashboard-access-sa.yaml
+  command: kubectl apply -f {{ yaml_home }}/dashboard-access-sa.yaml
   become_user: vagrant
 

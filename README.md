@@ -6,7 +6,7 @@ on local machine using Vagrant.
 By default you get 1 master, 2 working nodes, NFS server, loadbalancer,
 monitoring, and deployed dashboard.
 
-Version of deployed Kubernetes cluster is 1.19, version of Ubuntu VirtualBox
+Version of deployed Kubernetes cluster is 1.20.1, version of Ubuntu VirtualBox
 image is 18.04.
 
 ## Dashboard
@@ -16,7 +16,7 @@ dashboard will be available on both:
 - https://192.168.100.101:30000
 - https://192.168.100.102:30000
 
-Note:
+**Note:**
 In order to access dashboard via Chromium based browsers, you'll have to bypass
 invalid error certificate error on above mentioned URLs. In order to do that,
 just type `thisisunsafe` while on dashboard page. You don't need any input
@@ -32,17 +32,17 @@ For examples on how to use/create your own pv/pvc, check `/storage` directory.
 For bare-metal loadbalancing purposes [MetalLB](https://metallb.universe.tf/) is used.
 For deployment manifests check `/lb` directory.
 
-
-
 ## Monitoring
-Prometheus is used for monitoring backend, Grafana is deployed for visualizing
-graphs. Deployment manifests are available in `/monitoring` directory.
+Prometheus operator is installed, if you wish to consume it, check example in
+`monitoring/prometheus-example.yaml`. Full blown setup with node-exporter,
+kube-state-metrics, alertmanager, and Grafana is a bit too resource expensive
+for what this project aims to achieve.
 
 ## Requirements
 * [Vagrant](https://www.vagrantup.com/)
 * [VirtualBox](https://www.virtualbox.org/)
 
-Note:
+**Note**:
 Vagrantfile uses ansible_local module, which means you don't need Ansible
 installed on your workstation. However, if you already have it installed,
 and prefer to use that instead of letting Vagrant install Ansible on each
@@ -84,7 +84,10 @@ scp -i ~/.vagrant.d/insecure_private_key vagrant@192.168.100.100:~/.kube/config 
 ```
 Note: In case you redeploy cluster, you'll have to remove previous entry from `.ssh/known_hosts` or you'll
 get `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` warning, you can use
-this command for example: `sed -i "/192.168.100.100/d" ~/.ssh/known_hosts`
+this command for example:
+```bash
+sed -i "/192.168.100.100/d" ~/.ssh/known_hosts
+```
 * You can now access Kubernetes cluster without sshing into Vagrant box:
 
 `kubectl --kubeconfig=/home/$USER/.kube/kubernetes-localhost get pods --all-namespaces`

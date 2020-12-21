@@ -59,11 +59,11 @@
     reload: yes
 
 - name: Install Kubernetes binaries
-  apt: 
+  apt:
     name: [
-      'kubelet',
-      'kubeadm',
-      'kubectl']
+      'kubelet={{ k8s_ver }}',
+      'kubeadm={{ k8s_ver }}',
+      'kubectl={{ k8s_ver }}']
     state: present
     update_cache: yes
 

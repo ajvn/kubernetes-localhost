@@ -1,0 +1,19 @@
+---
+- name: Upload manifests
+  copy:
+    src: '{{ item }}'
+    dest: '{{ yaml_home }}'
+    owner: vagrant
+    group: vagrant
+    mode: '0644'
+  with_items:
+    - ../../../monitoring/prometheus-bundle.yaml
+
+- name: Create namespace
+  command: kubectl create namespace prometheus-monitoring
+  become_user: vagrant
+
+- name: Create deployment
+  command: kubectl apply -f {{ yaml_home }}/prometheus-bundle.yaml
+  become_user: vagrant
+

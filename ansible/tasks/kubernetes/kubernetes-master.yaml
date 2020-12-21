@@ -1,6 +1,12 @@
 # This role is meant to be run once, in case you need to repeat provisioning,
 # rebuild whole cluster.
 ---
+- name: Create directory for yaml files
+  file:
+    path: '{{ yaml_home }}'
+    state: directory
+    mode: '0755'
+
 - name: Apt over HTTPS
   apt:
     name: [
@@ -71,9 +77,9 @@
 - name: Install Kubernetes binaries
   apt:
     name: [
-      'kubelet',
-      'kubeadm',
-      'kubectl']
+      'kubelet={{ k8s_ver }}',
+      'kubeadm={{ k8s_ver }}',
+      'kubectl={{ k8s_ver }}']
     state: present
     update_cache: yes
 

@@ -10,6 +10,14 @@
     executable: /bin/bash
   become_user: vagrant
 
+- name: Upload manifest
+  copy:
+    src: ../../../lb/metallb-config.yaml
+    dest: '{{ yaml_home }}'
+    owner: vagrant
+    group: vagrant
+    mode: '0644'
+
 - name: Creation of namespace
   command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
   become_user: vagrant
@@ -23,5 +31,5 @@
   become_user: vagrant
 
 - name: MetalLB configuration
-  command: kubectl apply -f ../../../lb/metallb-config.yaml
+  command: kubectl apply -f {{ yaml_home }}/metallb-config.yaml
   become_user: vagrant
