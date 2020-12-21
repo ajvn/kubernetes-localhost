@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
-  name: main
+  name: example
 spec:
   resources:
     requests:
@@ -11,7 +11,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: prometheus-main
+  name: prometheus-example
 spec:
   type: LoadBalancer
   ports:

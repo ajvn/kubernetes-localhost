@@ -9,9 +9,7 @@
     - [x] Jenkins ephemeral
     - [ ] Jenkins with persistent storage
 * [ ] Monitoring:
-    - [ ] Prometheus Clusterrole manifest
-    - [ ] Prometheus ConfigMap manifest
-    - [ ] Prometheus Storage manifest
-    - [ ] Prometheus Deployment manifest
+    - [ ] Deploy Prometheus operator
+    - [ ] Create Prometheus deployment example
 * [ ] Image registry:
     - [ ] Setup solution for image registry inside of the cluster
