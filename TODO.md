@@ -8,8 +8,8 @@
     - [ ] Nginx with persistent storage
     - [x] Jenkins ephemeral
     - [ ] Jenkins with persistent storage
-* [ ] Monitoring:
-    - [ ] Deploy Prometheus operator
-    - [ ] Create Prometheus deployment example
+* [x] Monitoring:
+    - [x] Deploy Prometheus operator
+    - [x] Create Prometheus deployment example
 * [ ] Image registry:
     - [ ] Setup solution for image registry inside of the cluster
