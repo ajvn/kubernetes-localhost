@@ -76,6 +76,13 @@ Vagrant.configure("2") do |config|
                 yaml_home: YAML_HOME
             }
         end
+        master.vm.provision "ansible_local" do |ansible|
+            ansible.playbook = "ansible/playbooks/image-registry/image-registry-deployment.yaml"
+            ansible.extra_vars = {
+                ansible_python_interpreter: "/usr/bin/python3",
+                yaml_home: YAML_HOME
+            }
+        end
     end
 
     (1..N).each do |node_id|

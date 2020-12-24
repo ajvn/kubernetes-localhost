@@ -1,0 +1,23 @@
+---
+- name: Upload manifests
+  copy:
+    src: '{{ item }}'
+    dest: '{{ yaml_home }}'
+    owner: vagrant
+    group: vagrant
+    mode: '0644'
+  with_items:
+    - ../../../image-registry/docker-registry-deployment.yaml
+    - ../../../image-registry/docker-registry-web-ui-deployment.yaml
+
+- name: Create namespace
+  command: kubectl create namespace docker-registry
+  become_user: vagrant
+
+- name: Create Docker Registry deployment
+  command: kubectl apply -f {{ yaml_home }}/docker-registry-deployment.yaml
+  become_user: vagrant
+
+- name: Create Docker Registry Web UI deployment
+  command: kubectl apply -f {{ yaml_home }}/docker-registry-web-ui-deployment.yaml
+  become_user: vagrant

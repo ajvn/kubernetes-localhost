@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-registry-web-ui-deployment
+  namespace: docker-registry
+spec:
+  selector:
+    matchLabels:
+      app: docker-registry-web-ui
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: docker-registry-web-ui
+    spec:
+      containers:
+      - env:
+        - name: REGISTRY_TITLE
+          value: Kubernetes Localhost Image Registry
+        - name: REGISTRY_URL
+          value: http://192.168.100.102:30001
+        name: docker-registry-web-ui
+        image: joxit/docker-registry-ui:static
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: docker-registry-web-ui
+  name: docker-registry-web-ui-service
+  namespace: docker-registry
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30002
+  selector:
+    app: docker-registry-web-ui
+

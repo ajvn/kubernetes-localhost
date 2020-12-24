@@ -12,4 +12,4 @@
     - [x] Deploy Prometheus operator
     - [x] Create Prometheus deployment example
 * [ ] Image registry:
-    - [ ] Setup solution for image registry inside of the cluster
+    - [x] Setup solution for image registry inside of the cluster

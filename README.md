@@ -4,7 +4,7 @@ Deploys Kubernetes with loadbalancer, dashboard, persistent storage, and monitor
 on local machine using Vagrant.
 
 By default you get 1 master, 2 working nodes, NFS server, loadbalancer,
-monitoring, and deployed dashboard.
+monitoring, image registry, and deployed dashboard.
 
 Version of deployed Kubernetes cluster is 1.20.1, version of Ubuntu VirtualBox
 image is 18.04.
@@ -24,11 +24,11 @@ field, just typing it while on that page will do the trick.
 
 ![Dashboard Example](images/kubernetes-localhost-dashboard.png)
 
-## Storage:
+## Storage
 Persistent volume `pv-nfs` and 5GB persistent volume claim `pvc-nfs` are provided automatically.
 For examples on how to use/create your own pv/pvc, check `/storage` directory.
 
-## Load-balancer:
+## Load-balancer
 For bare-metal loadbalancing purposes [MetalLB](https://metallb.universe.tf/) is used.
 For deployment manifests check `/lb` directory.
 
@@ -37,6 +37,17 @@ Prometheus operator is installed, if you wish to consume it, check example in
 `monitoring/prometheus-example.yaml`. Full blown setup with node-exporter,
 kube-state-metrics, alertmanager, and Grafana is a bit too resource expensive
 for what this project aims to achieve.
+
+## Image registry
+Docker Registry v2 is used for image registry inside of the cluster.
+If you wish to use it, you can access it on port 30001. Simple web ui is hosted
+on port 30002 (check endpoints in `docker-registry` namespace).
+You will have to add [insecure registry entry](https://docs.docker.com/registry/insecure/)
+to your docker daemon.
+
+**Note:**
+In case web ui is not showing repositories properly, check `REGISTRY_URL` in its
+deployment, and make sure it has proper value.
 
 ## Requirements
 * [Vagrant](https://www.vagrantup.com/)
