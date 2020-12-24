@@ -53,24 +53,6 @@ spec:
     app: docker-registry
 ---
 apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app.kubernetes.io/name: docker-registry-web-ui
-  name: docker-registry-web-ui-service
-  namespace: docker-registry
-spec:
-  type: LoadBalancer
-  ports:
-  - name: http
-    protocol: TCP
-    port: 8080
-    targetPort: 8080
-    nodePort: 30002
-  selector:
-    app: docker-registry-web-ui
----
-apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: docker-registry-pv
