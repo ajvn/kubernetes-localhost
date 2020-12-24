@@ -19,7 +19,7 @@ spec:
         - name: REGISTRY_TITLE
           value: Kubernetes Localhost Image Registry
         - name: REGISTRY_URL
-          value: http://192.168.100.102:30001
+          value: http://192.168.100.101:30001
         name: docker-registry-web-ui
         image: joxit/docker-registry-ui:static
         ports:
