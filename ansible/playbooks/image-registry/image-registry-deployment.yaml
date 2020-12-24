@@ -1,0 +1,10 @@
+
+---
+- hosts: all
+  gather_facts: no
+  become: True
+
+  tasks:
+    - name: Deploy Docker Registry
+      include_tasks: ../../tasks/image-registry/docker-registry-deployment.yaml
+

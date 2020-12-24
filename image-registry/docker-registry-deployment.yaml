@@ -1,0 +1,101 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-registry-deployment
+  namespace: docker-registry
+spec:
+  selector:
+    matchLabels:
+      app: docker-registry
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: docker-registry
+    spec:
+      containers:
+      - name: docker-registry
+        image: registry:2
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+          - mountPath: /var/lib/registry
+            name: docker-registry
+      volumes:
+        - name: docker-registry
+          persistentVolumeClaim:
+            claimName: docker-registry-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: docker-registry
+  name: docker-registry-service
+  namespace: docker-registry
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    protocol: TCP
+    port: 5000
+    targetPort: 5000
+    nodePort: 30001
+  selector:
+    app: docker-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: docker-registry-web-ui
+  name: docker-registry-web-ui-service
+  namespace: docker-registry
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 30002
+  selector:
+    app: docker-registry-web-ui
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: docker-registry-pv
+  namespace: docker-registry
+  labels:
+    volume: nfs
+spec:
+  storageClassName: nfs
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: 192.168.100.150
+    path: "/var/nfs/kubernetes"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: docker-registry-pvc
+  namespace: docker-registry
+spec:
+  storageClassName: nfs
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
