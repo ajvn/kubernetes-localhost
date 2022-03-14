@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "k8s-nfs-server" do |nfs|
         nfs.vm.box = IMAGE_NAME
         nfs.vm.box_check_update = "True"
-        nfs.vm.network "private_network", ip: "192.168.100.150"
+        nfs.vm.network "private_network", ip: "192.168.100.150", type: "dhcp", name: "vboxnet0", nic_type: "virtio", adapter: 2
         nfs.vm.hostname = "k8s-nfs-server"
         nfs.vm.provider "virtualbox" do |nfs|
           nfs.memory = "768"

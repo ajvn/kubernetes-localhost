@@ -1,4 +1,5 @@
 # kubernetes-localhost
+**Due to be updated, it works, but some approaches need to be reworked.**
 [![asciicast](https://asciinema.org/a/352272.svg)](https://asciinema.org/a/352272?autoplay=1&speed=5)
 Deploys Kubernetes with loadbalancer, dashboard, persistent storage, and monitoring
 on local machine using Vagrant.
